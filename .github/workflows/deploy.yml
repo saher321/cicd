@@ -1,0 +1,39 @@
+
+name: HTML CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Validate HTML file
+        run: |
+          test -f index.html
+          echo "HTML file exists"
+
+      - name: Build Website
+        run: |
+          mkdir -p dist
+          cp index.html dist/
+          echo "Website build completed"
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-build
+          path: dist/
